@@ -36,7 +36,7 @@
                                         {{ form.faculty }}
                                     </div>
 
-                                    {% if model %}
+                                    {% if form.instance.pk %}
                                     <button type="submit" class="btn btn-warning btn-md">Save</button>
                                     {% else %}
                                     <button type="submit" class="btn btn-success btn-md">Add</button>

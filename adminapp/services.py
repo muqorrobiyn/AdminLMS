@@ -24,15 +24,6 @@ def get_faculties():
         return faculties
 
 
-def get_groups():
-    with closing(connection.cursor()) as cursor:
-        cursor.execute("""SELECT adminapp_group.id, adminapp_group.name, adminapp_faculty.name as faculty
-         from adminapp_group left join adminapp_faculty on adminapp_group.faculty_id = adminapp_faculty.id
-         """)
-        groups = dictfetchall(cursor)
-        return groups
-
-
 def get_kafedra():
     with closing(connection.cursor()) as cursor:
         cursor.execute("""SELECT * from adminapp_kafedra""")
@@ -49,13 +40,21 @@ def get_subject():
 
 def get_teacher():
     with closing(connection.cursor()) as cursor:
-        cursor.execute("""SELECT adminapp_teacher.id, adminapp_teacher.first_name, adminapp_teacher.last_name,
-        adminapp_teacher.age, adminapp_kafedra.name as kafedra_name, adminapp_subject.name as subject_name from 
-        adminapp_teacher left join adminapp_kafedra on adminapp_teacher.kafedra_id = adminapp_kafedra.id
+        cursor.execute("""SELECT adminapp_teacher.id, adminapp_teacher.first_name, 
+        adminapp_teacher.last_name, adminapp_teacher.age, adminapp_kafedra.name
+        as kafedra_name, adminapp_subject.name as subject_name from adminapp_teacher 
+        left join adminapp_kafedra on adminapp_teacher.kafedra_id = adminapp_kafedra.id
         left join adminapp_subject on adminapp_teacher.subject_id = adminapp_subject.id""")
         teachers = dictfetchall(cursor)
         return teachers
 
+def get_groups():
+    with closing(connection.cursor()) as cursor:
+        cursor.execute("""SELECT adminapp_group.id, adminapp_group.name, adminapp_faculty.name as faculty
+         from adminapp_group left join adminapp_faculty on adminapp_group.faculty_id = adminapp_faculty.id
+         """)
+        groups = dictfetchall(cursor)
+        return groups
 
 def get_student():
     with closing(connection.cursor()) as cursor:

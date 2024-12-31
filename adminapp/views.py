@@ -48,10 +48,19 @@ def home_page(request):
 @login_required_decorator
 def faculty_create(request):
     model = Faculty()
-    form = FacultyForm(request.POST or None, instance=model)
+    form = FacultyForm(request.POST, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions1 = request.session.get('actions1', [])
+        actions1 += [f"You created faculty: {request.POST.get('name')}"]
+        request.session["actions1"] = actions1
+
+        faculty_count = request.session.get('faculty_count', 0)
+        faculty_count += 1
+        request.session["faculty_count"] = faculty_count
+
         return redirect('faculty_list')
+
     ctx = {
         "model":model,
         "form":form
@@ -64,6 +73,9 @@ def faculty_edit(request,pk):
     form = FacultyForm(request.POST or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions1 = request.session.get('actions1', [])
+        actions1 += [f"You edited faculty: {request.POST.get('name')}"]
+        request.session["actions1"] = actions1
         return redirect('faculty_list')
     ctx = {
         "model":model,
@@ -90,13 +102,13 @@ def faculty_list(request):
 @login_required_decorator
 def kafedra_create(request):
     model = Kafedra()
-    form = KafedraForm(request.POST or None, instance=model)
+    form = KafedraForm(request.POST , instance=model)
     if request.POST and form.is_valid():
         form.save()
 
-        actions = request.session.get('actions',[])
-        actions += [f"You created kafedra: {request.POST.get('name')}"]
-        request.session["actions"] = actions
+        actions1 = request.session.get('actions1',[])
+        actions1 += [f"You created kafedra: {request.POST.get('name')}"]
+        request.session["actions1"] = actions1
 
         kafedra_count = request.session.get('kafedra_count', 0)
         kafedra_count +=1
@@ -118,9 +130,9 @@ def kafedra_edit(request,pk):
     if request.POST and form.is_valid():
         form.save()
 
-        actions = request.session.get('actions',[])
-        actions += [f"You edited kafedra: {request.POST.get('name')}"]
-        request.session["actions"] = actions
+        actions1 = request.session.get('actions',[])
+        actions1 += [f"You edited kafedra: {request.POST.get('name')}"]
+        request.session["actions1"] = actions1
         return redirect('kafedra_list')
 
     ctx = {
@@ -150,6 +162,13 @@ def subject_create(request):
     form = SubjectForm(request.POST or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions2 = request.session.get('actions2', [])
+        actions2 += [f"You created subject: {request.POST.get('name')}"]
+        request.session["actions2"] = actions2
+
+        subject_count = request.session.get('subject_count', 0)
+        subject_count += 1
+        request.session["subject_count"] = subject_count
         return redirect('subject_list')
     ctx = {
         "model":model,
@@ -163,6 +182,10 @@ def subject_edit(request,pk):
     form = SubjectForm(request.POST or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions2 = request.session.get('actions2', [])
+        actions2 += [f"You edited subject: {request.POST.get('name')}"]
+        request.session["actions2"] = actions2
+
         return redirect('subject_list')
     ctx = {
         "model":model,
@@ -191,10 +214,12 @@ def teacher_create(request):
     form = TeacherForm(request.POST or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
-        actions = request.session.get('actions',[])
-        actions += [f"You added teacher: {request.POST.get('first_name')}"]
-        request.session["actions"] = actions
-
+        actions2 = request.session.get('actions2',[])
+        actions2 += [f"You created teacher: {request.POST.get('first_name')}"]
+        request.session["actions2"] = actions2
+        teacher_count = request.session.get('teacher_count', 0)
+        teacher_count += 1
+        request.session["teacher_count"] = teacher_count
         return redirect('teacher_list')
     ctx = {
         "model":model,
@@ -208,6 +233,11 @@ def teacher_edit(request,pk):
     form = TeacherForm(request.POST or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions2 = request.session.get('actions2', [])
+        actions2 += [f"You edited teacher: {request.POST.get('first_name')}"]
+        request.session["actions2"] = actions2
+
+
         return redirect('teacher_list')
     ctx = {
         "model":model,
@@ -236,6 +266,13 @@ def group_create(request):
     form = GroupForm(request.POST or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions3 = request.session.get('actions3', [])
+        actions3 += [f"You created group: {request.POST.get('name')}"]
+        request.session["actions3"] = actions3
+
+        group_count = request.session.get('group_count', 0)
+        group_count += 1
+        request.session["group_count"] = group_count
         return redirect('group_list')
     ctx = {
         "model":model,
@@ -249,6 +286,10 @@ def group_edit(request,pk):
     form = GroupForm(request.POST or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions3 = request.session.get('actions3', [])
+        actions3 += [f"You edited group: {request.POST.get('name')}"]
+        request.session["actions3"] = actions3
+
         return redirect('group_list')
     ctx = {
         "model":model,
@@ -277,6 +318,13 @@ def student_create(request):
     form = StudentForm(request.POST or None, request.FILES or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions3 = request.session.get('actions3', [])
+        actions3 += [f"You created student: {request.POST.get('first_name')}"]
+        request.session["actions3"] = actions3
+
+        student_count = request.session.get('student_count', 0)
+        student_count += 1
+        request.session["student_count"] = student_count
         return redirect('student_list')
     ctx = {
         "model":model,
@@ -290,6 +338,10 @@ def student_edit(request,pk):
     form = StudentForm(request.POST or None,request.FILES or None, instance=model)
     if request.POST and form.is_valid():
         form.save()
+        actions3 = request.session.get('actions3', [])
+        actions3 += [f"You edited student: {request.POST.get('first_name')}"]
+        request.session["actions3"] = actions3
+
         return redirect('student_list')
     ctx = {
         "model":model,
